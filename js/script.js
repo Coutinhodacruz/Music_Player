@@ -12,7 +12,7 @@ const wrapper = document.querySelector(".wrapper"),
   progressBar = wrapper.querySelector(".progress-bar"),
   musicList = wrapper.querySelector(".music-list"),
   showMoreBtn = wrapper.querySelector("#more-music"),
-  hideMusicBtn = wrapper.querySelector("#close");
+  hideMusicBtn = musicList.querySelector("#close");
 
 let musicIndex = 2;
 
@@ -166,8 +166,22 @@ for (let i = 0; i < allMusic.length; i++) {
                     <span>${allMusic[i].name}</span>
                     <p>${allMusic[i].artist}</p>
                 </div>
-                 <audio id="${allMusic[i].src}" src="${allMusic[i].src}.mp3"></audio>
-                <span class="audio-duration">13:45</span>
+                 <audio class="${allMusic[i].src}" src="songs/${allMusic[i].src}.mp3"></audio>
+                <span id="${allMusic[i].src}" class="audio-duration">13:45</span>
             </li>`;
   ulTag.insertAdjacentHTML('beforeend', liTag);
+
+  let  liAudioDuaration  = ulTag.querySelector(`#${allMusic[i].src}`);
+  let  liAudioTag= ulTag.querySelector(`.${allMusic[i].src}`);
+
+  liAudioTag.addEventListener('loadeddata', ()=>{
+    let audioDuration = liAudioTag.duration;
+    let totalMin = Math.floor(audioDuration / 60);
+    let totalSec = Math.floor(audioDuration % 60);
+    if (totalSec < 10){
+      totalSec = `${totalSec}`;
+    }
+    liAudioDuaration.innerText = `${totalMin}: ${totalSec}`;
+  });
 }
+
